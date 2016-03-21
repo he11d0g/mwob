@@ -137,7 +137,7 @@ class MWOB {
                 $file = $this->_obfuscateFunc($file);
                 break;
             case 2:
-//                $file = $this->_compressCode($file);
+                $file = $this->_compressCode($file);
                 $file = $this->_obfuscateVars($file);
                 $file = $this->_obfuscateFunc($file);
                 $file = $this->_obfuscateClass($file);
