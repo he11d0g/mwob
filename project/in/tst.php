@@ -1,7 +1,12 @@
 <?php
 class Controller {
     //Базовый контроллер
+    public $ttt;
 
+    public function gtPent()
+    {
+
+    }
 
     public static $layout = 'main'; //Базовый шаблон  (названия файла размещёного в папке layout)
 
@@ -50,3 +55,10 @@ class Controller {
 
 
 }
+
+Controller::$layout = 1;
+Controller::render('sas',array());
+$ddd = new Controller();
+$ttt = new Controller;
+$ttt->$ttt = 2;
+$ttt->gtPent($ddd);

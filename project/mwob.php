@@ -8,6 +8,7 @@
 class MWOB {
 
     public $mask = 'abdefhiknrstyzABDEFGHKNQRSTYZ0123456789';
+    public $extend = ['php','phd'];
     public $parsePath;
     public $outPath;
     public $level;
@@ -40,18 +41,28 @@ class MWOB {
 
     public function run()
     {
-        if(is_file($this->parsePath)){
+        if (is_file($this->parsePath)) {
             $this->_parseFile($this->parsePath, $this->outPath);
-            var_dump($this->classes);
         } else if (is_dir($this->parsePath)) {
             $listTree = $this->_readDirs($this->parsePath);
-            foreach($listTree as $obj){
+            foreach ($listTree as $obj) {
                 $newDir = str_replace($this->parsePath, $this->outPath, $obj['dir']);
-                if(!is_dir($newDir)){
+                if (!is_dir($newDir)) {
                     $this->_createDir($newDir);
                 }
-                if(!empty($obj['file'])){
-                    $this->_parseFile($obj['dir'] .'/'.$obj['file'],$newDir . '/'. $obj['file']);
+                if (!empty($obj['file'])) {
+                    $isPhp = false;
+                    foreach ($this->extend as $ext) {
+                        if (preg_match('/\.' . $ext.'$/', $obj['file'])) {
+                            $isPhp = true;
+                        }
+                    }
+                    if($isPhp){
+                        $this->_parseFile($obj['dir'] . '/' . $obj['file'], $newDir . '/' . $obj['file']);
+                    }else {
+                        copy($obj['dir'] . '/' . $obj['file'], $newDir . '/' . $obj['file']);
+                    }
+
                 }
             }
         }
@@ -137,7 +148,7 @@ class MWOB {
                 $file = $this->_obfuscateFunc($file);
                 break;
             case 2:
-//                $file = $this->_compressCode($file);
+                $file = $this->_compressCode($file);
                 $file = $this->_obfuscateVars($file);
                 $file = $this->_obfuscateFunc($file);
                 $file = $this->_obfuscateClass($file);

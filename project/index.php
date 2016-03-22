@@ -7,5 +7,5 @@
 
 include_once 'mwob.php';
 
-$m = new MWOB(__DIR__.'/tst.php',__DIR__.'/out.php',2);
+$m = new MWOB(__DIR__.'/in',__DIR__.'/out',2);
 $m->run();
