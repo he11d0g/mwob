@@ -18,7 +18,7 @@ class MWOB {
 
     //Vars
     private $vars = [];
-    private $ignoreVars = ['$GLOBALS','$_SERVER','$_GET','$_POST','$_FILES','$_COOKIE','$_SESSION','$_REQUEST','$_ENV','$argv','$argc'];
+    private $ignoreVars = ['$GLOBALS','$_SERVER','$_GET','$_POST','$_FILES','$_COOKIE','$_SESSION','$_REQUEST','$_ENV','$argv','$argc','$this'];
     private $varsPattern = '/(\$[a-zA-Z0-9_]{1,})/';
     private $varsPatternKey = 1;
 
@@ -95,10 +95,8 @@ class MWOB {
                 }
             }
             closedir($handle);
-
-            return $data;
         }
-
+        return $data;
     }
 
 
@@ -220,7 +218,7 @@ class MWOB {
             $k = '\\'.$k;
             $objK = str_replace('\\$','',$k);
             $file = preg_replace('/('.$k.')([^a-zA-Z_])/','\\'.$v.'$2',$file);//Обычные
-            $file = preg_replace('/-\>('.$objK.')([^a-zA-Z_])/','->\\'.$v.'$2',$file);//Обьекта
+            $file = preg_replace('/-\>('.$objK.')([^a-zA-Z_])/','->'.str_replace('$','',$v).'$2',$file);//Обьекта
         }
 
         return $file;
